@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, ChevronDown } from 'lucide-react';
 import { content } from '../data';
 import BirthdayCake from './BirthdayCake';
+import Countdown from './Countdown';
 import { HiddenGift } from './ClickableHearts';
 
 export default function Hero({
@@ -47,13 +48,16 @@ export default function Hero({
       </motion.div>
 
       <motion.p
-        className="mb-8 max-w-md font-amiri text-base leading-relaxed text-rose-100/80 sm:text-lg"
+        className="mb-4 max-w-md font-amiri text-base leading-relaxed text-rose-100/80 sm:text-lg"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
         {content.hero.subtitle}
       </motion.p>
+
+      {/* العداد التنازلي ليوم ميلاد رقيّة 22 نوفمبر */}
+      <Countdown />
 
       {/* الكيكة */}
       <motion.div
@@ -68,14 +72,14 @@ export default function Hero({
       {/* زر الاحتفال */}
       <motion.button
         onClick={onCelebrate}
-        className="group flex items-center gap-3 rounded-full bg-gradient-to-r from-rose-300 to-rose-500 px-8 py-4 font-display text-lg font-semibold text-white shadow-xl glow animate-pulse-glow"
+        className="group flex items-center gap-3 rounded-full bg-gradient-to-r from-rose-400 via-rose-500 to-pink-500 px-8 py-4 font-display text-lg font-semibold text-white shadow-xl glow animate-pulse-glow"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2 }}
       >
-        <Sparkles size={20} className="animate-gentle-float" />
+        <Sparkles size={20} className="animate-gentle-float text-yellow-300" />
         {content.hero.surpriseBtn}
       </motion.button>
 

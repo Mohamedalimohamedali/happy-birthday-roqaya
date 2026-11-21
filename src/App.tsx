@@ -4,6 +4,7 @@ import Intro from './components/Intro';
 import Hero from './components/Hero';
 import Gallery from './components/Gallery';
 import Letter from './components/Letter';
+import LoveReasons from './components/LoveReasons';
 import Timeline from './components/Timeline';
 import FinalSurprise from './components/FinalSurprise';
 import MusicPlayer from './components/MusicPlayer';
@@ -82,6 +83,7 @@ export default function App() {
           />
 
           <Letter />
+          <LoveReasons />
           <Timeline />
           <FinalSurprise onReveal={fireConfetti} />
         </main>
