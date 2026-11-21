@@ -13,6 +13,7 @@ export default function FinalSurprise({
   const handle = () => {
     setRevealed(true);
     onReveal?.();
+    setTimeout(() => onReveal?.(), 500);
   };
 
   return (
@@ -31,17 +32,17 @@ export default function FinalSurprise({
           <motion.button
             key="btn"
             onClick={handle}
-            className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-rose-300 via-rose-400 to-rose-500 px-8 py-5 font-display text-lg font-bold text-white shadow-2xl glow animate-pulse-glow"
+            className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-rose-400 via-rose-500 to-pink-500 px-9 py-5 font-display text-lg font-bold text-white shadow-2xl glow animate-pulse-glow"
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
           >
-            <Sparkles className="animate-gentle-float" size={22} />
-            {content.finalSurprise.button}
+            <Sparkles className="animate-gentle-float text-yellow-300" size={24} />
+            <span>{content.finalSurprise.button}</span>
             <Heart
-              size={22}
-              className="animate-gentle-float"
+              size={24}
+              className="animate-gentle-float text-rose-200"
               fill="white"
             />
           </motion.button>
@@ -53,32 +54,53 @@ export default function FinalSurprise({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 120 }}
           >
-            {/* توهج خلفي */}
+            {/* نافورة قلوب متحركة تغطي المكان */}
+            <div className="pointer-events-none absolute -inset-40 overflow-hidden">
+              {Array.from({ length: 24 }).map((_, i) => (
+                <motion.span
+                  key={i}
+                  className="absolute left-1/2 top-1/2 text-3xl select-none"
+                  initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                  animate={{
+                    opacity: 0,
+                    scale: 1.8,
+                    x: (Math.random() - 0.5) * 500,
+                    y: -120 - Math.random() * 350,
+                    rotate: (Math.random() - 0.5) * 60,
+                  }}
+                  transition={{ duration: 2.2, delay: i * 0.06 }}
+                >
+                  {['❤️', '💖', '💕', '✨', '🌸', '👸🏼', '💍'][i % 7]}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* توهج خلفي مشع */}
             <motion.div
               className="absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
+              animate={{ scale: [1, 1.35, 1], opacity: [0.5, 0.85, 0.5] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <div className="h-72 w-72 rounded-full bg-rose-400/30 blur-3xl" />
+              <div className="h-80 w-80 rounded-full bg-gradient-to-tr from-rose-500/30 to-pink-400/30 blur-3xl" />
             </motion.div>
 
-            <div className="glass-pink max-w-xl rounded-3xl p-10 glow">
+            <div className="glass-pink max-w-xl rounded-3xl border border-rose-300/40 bg-[#280c21]/95 p-8 shadow-2xl backdrop-blur-2xl glow sm:p-12">
               <motion.div
-                className="mb-4 text-4xl"
-                animate={{ scale: [1, 1.2, 1] }}
+                className="mb-5 text-5xl"
+                animate={{ scale: [1, 1.25, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                ❤️
+                ❤️👸🏼
               </motion.div>
-              <p className="font-amiri text-xl leading-relaxed text-rose-50 sm:text-2xl">
+              <p className="font-amiri text-xl leading-relaxed text-rose-50 sm:text-2xl font-bold">
                 {content.finalSurprise.reveal}
               </p>
               <motion.div
-                className="mt-6 flex items-center justify-center gap-2 text-rose-200"
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                className="mt-8 flex items-center justify-center gap-2 border-t border-rose-200/20 pt-6 text-rose-200"
+                animate={{ opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
               >
-                <span className="font-display text-sm">
+                <span className="font-display text-base font-bold">
                   {content.sender} 💕 {content.recipient}
                 </span>
               </motion.div>

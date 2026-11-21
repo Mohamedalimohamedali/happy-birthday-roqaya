@@ -15,13 +15,13 @@ export default function Hero({
     <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
       {/* لمعة علوية */}
       <motion.div
-        className="mb-4 flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm text-rose-200"
+        className="mb-4 flex items-center gap-2 rounded-full border border-rose-300/30 bg-rose-500/20 px-5 py-2 text-sm font-semibold text-rose-100 shadow-lg backdrop-blur-md"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Sparkles size={14} />
-        عيد ميلاد سعيد
+        <Sparkles size={16} className="text-yellow-300 animate-spin" />
+        <span>عيد ميلاد نور عيني رقيّة 🎂💕</span>
       </motion.div>
 
       {/* العنوان الرئيسي */}

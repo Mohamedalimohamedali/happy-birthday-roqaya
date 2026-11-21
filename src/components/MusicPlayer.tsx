@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export interface Track {
   id: string;
@@ -29,10 +31,7 @@ interface MusicPlayerProps {
 }
 
 /**
- * مشغل صوتي يعمل بالكامل في الخلفية:
- * 1. يبدأ أغنية رامي صبري (كل سنة) فور كتابة كلمة السر وتستمر شغالة بدون إعادة عند فتح الهدية.
- * 2. عند الضغط على الصورة، ينتقل تلقائياً لأغنية (إحساسي معاك) لرامي صبري.
- * 3. عند الضغط على علامة الإغلاق (X)، يرجع مباشرة لأغنية رامي صبري الأولى (كل سنة).
+ * مشغل صوتي يعمل بالكامل في الخلفية مع زر تحكم ناعم وشفاف في الزاوية العلوية
  */
 export default function MusicPlayer({
   activeTrackId,
@@ -40,6 +39,7 @@ export default function MusicPlayer({
 }: MusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentTrackIdRef = useRef<string>(activeTrackId);
+  const [muted, setMuted] = useState(false);
 
   const currentTrack =
     defaultTracks.find((t) => t.id === activeTrackId) || defaultTracks[0];
@@ -70,12 +70,42 @@ export default function MusicPlayer({
     }
   }, [playSignal, activeTrackId, currentTrack]);
 
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !muted;
+      setMuted(!muted);
+    }
+  };
+
   return (
-    <audio
-      ref={audioRef}
-      src={currentTrack.source}
-      preload="auto"
-      loop
-    />
+    <>
+      <audio
+        ref={audioRef}
+        src={currentTrack.source}
+        preload="auto"
+        loop
+      />
+
+      {/* زر كتم / تشغيل صوت صغير وشفاف في الزاوية العلوية */}
+      <motion.button
+        onClick={toggleMute}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed top-5 left-5 z-[90] flex h-10 w-10 items-center justify-center rounded-full border border-rose-300/30 bg-black/40 text-rose-200 shadow-lg backdrop-blur-md transition hover:bg-black/60 hover:text-white"
+        aria-label={muted ? 'تشغيل الصوت' : 'كتم الصوت'}
+        title={muted ? 'اضغطي لتشغيل الصوت' : 'اضغطي لكتم الصوت'}
+      >
+        {muted ? (
+          <VolumeX size={18} className="text-rose-400" />
+        ) : (
+          <div className="relative">
+            <Volume2 size={18} />
+            <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400 animate-ping" />
+          </div>
+        )}
+      </motion.button>
+    </>
   );
 }
