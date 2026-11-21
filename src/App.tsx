@@ -25,30 +25,28 @@ export default function App() {
     setTimeout(() => setConfetti(false), 120);
   }, []);
 
-  // When password is entered correctly and unlocked
+  // عند كتابة الباسورد وفتحه: تبدأ أغنية رامي صبري (كل سنة)
   const handleUnlock = useCallback(() => {
     setUnlocked(true);
     setActiveTrackId('ramy-kol-sana');
     setPlaySignal((prev) => prev + 1);
   }, []);
 
-  // When gift box is opened in Intro screen
+  // عند الضغط على افتحي هديتك: تستمر الأغنية في العمل بدون أي إعادة من البداية
   const handleIntroOpen = useCallback(() => {
     setOpened(true);
     fireConfetti();
-    // Guarantee song continues playing
-    setPlaySignal((prev) => prev + 1);
   }, [fireConfetti]);
 
-  // When user clicks the photo inside the gallery -> Happy Birthday to You
+  // عند النقر على الصورة: تشغيل أغنية رامي صبري (إحساسي معاك)
   const handlePhotoOpen = useCallback(() => {
-    setActiveTrackId('happy-birthday');
+    setActiveTrackId('ramy-ehsasi-maak');
     setPlaySignal((prev) => prev + 1);
     fireConfetti();
   }, [fireConfetti]);
 
-  // Switch back to Ramy Sabry
-  const handleSwitchToRamy = useCallback(() => {
+  // عند إغلاق الصورة (علامة X): إيقاف إحساسي معاك والرجوع لأغنية رامي صبري الأولى (كل سنة)
+  const handlePhotoClose = useCallback(() => {
     setActiveTrackId('ramy-kol-sana');
     setPlaySignal((prev) => prev + 1);
   }, []);
@@ -80,7 +78,7 @@ export default function App() {
 
           <Gallery
             onPhotoOpen={handlePhotoOpen}
-            onSwitchToRamy={handleSwitchToRamy}
+            onPhotoClose={handlePhotoClose}
           />
 
           <Letter />
@@ -89,7 +87,7 @@ export default function App() {
         </main>
       )}
 
-      {/* مشغل الموسيقى (يبدأ فور فك القفل بأغنية رامي صبري) */}
+      {/* مشغل الموسيقى بالخلفية */}
       {unlocked && (
         <MusicPlayer
           activeTrackId={activeTrackId}

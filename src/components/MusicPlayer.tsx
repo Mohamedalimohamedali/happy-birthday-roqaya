@@ -15,71 +15,67 @@ export const defaultTracks: Track[] = [
     source: '/audio/ramy-kol-sana.mp3',
   },
   {
-    id: 'happy-birthday',
-    title: 'Happy Birthday to You',
-    artist: 'أغنية عيد الميلاد',
-    source: '/audio/happy-birthday.mp3',
+    id: 'ramy-ehsasi-maak',
+    title: 'إحساسي معاك',
+    artist: 'رامي صبري',
+    source: '/audio/ramy-ehsasi-maak.mp3',
   },
 ];
 
 interface MusicPlayerProps {
   activeTrackId: string;
-  onTrackChange: (trackId: string) => void;
+  onTrackChange?: (trackId: string) => void;
   playSignal: number;
 }
 
 /**
- * مشغل صوتي يعمل بالكامل في الخلفية بدون أي شريط أو ويدجت جانبي مزعج
- * يبدأ أغنية رامي صبري فور فتح الباسورد
- * وينتقل لأغنية هابي بيرث داي فور الضغط على الصورة
+ * مشغل صوتي يعمل بالكامل في الخلفية:
+ * 1. يبدأ أغنية رامي صبري (كل سنة) فور كتابة كلمة السر وتستمر شغالة بدون إعادة عند فتح الهدية.
+ * 2. عند الضغط على الصورة، ينتقل تلقائياً لأغنية (إحساسي معاك) لرامي صبري.
+ * 3. عند الضغط على علامة الإغلاق (X)، يرجع مباشرة لأغنية رامي صبري الأولى (كل سنة).
  */
 export default function MusicPlayer({
   activeTrackId,
   playSignal,
 }: MusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentTrackIdRef = useRef<string>(activeTrackId);
 
   const currentTrack =
     defaultTracks.find((t) => t.id === activeTrackId) || defaultTracks[0];
 
-  // Sync track source
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (!audio.src.endsWith(currentTrack.source)) {
-      audio.src = currentTrack.source;
-      audio.load();
-    }
-  }, [currentTrack.source]);
-
-  // Handle playSignal changes
+  // Handle track switches or play signals
   useEffect(() => {
     if (playSignal === 0) return;
     const audio = audioRef.current;
     if (!audio) return;
 
-    const targetSrc = currentTrack.source;
-    if (!audio.src.endsWith(targetSrc)) {
-      audio.src = targetSrc;
-    }
+    const trackChanged = currentTrackIdRef.current !== activeTrackId;
+    currentTrackIdRef.current = activeTrackId;
 
-    audio.currentTime = 0;
-    audio.volume = 0.9;
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn('Autoplay waiting for user gesture:', err);
+    if (trackChanged || !audio.src.endsWith(currentTrack.source)) {
+      audio.src = currentTrack.source;
+      audio.currentTime = 0;
+      audio.volume = 0.95;
+      audio.play().catch((err) => {
+        console.warn('Playback error:', err);
       });
+    } else {
+      // Same track: if already playing, DO NOT reset to 0
+      if (audio.paused) {
+        audio.play().catch((err) => {
+          console.warn('Playback error:', err);
+        });
+      }
     }
-  }, [playSignal, currentTrack]);
+  }, [playSignal, activeTrackId, currentTrack]);
 
   return (
     <audio
       ref={audioRef}
       src={currentTrack.source}
       preload="auto"
-      loop={activeTrackId === 'ramy-kol-sana'}
+      loop
     />
   );
 }
