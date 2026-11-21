@@ -26,14 +26,12 @@ export default function App() {
     setTimeout(() => setConfetti(false), 120);
   }, []);
 
-  // عند كتابة الباسورد وفتحه: تبدأ أغنية رامي صبري (كل سنة)
   const handleUnlock = useCallback(() => {
     setUnlocked(true);
     setActiveTrackId('ramy-kol-sana');
     setPlaySignal((prev) => prev + 1);
   }, []);
 
-  // عند الضغط على افتحي هديتك: تستمر الأغنية في العمل بدون أي إعادة من البداية
   const handleIntroOpen = useCallback(() => {
     setOpened(true);
     fireConfetti();

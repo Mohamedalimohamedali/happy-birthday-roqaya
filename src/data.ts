@@ -1,3 +1,5 @@
+import { getAssetUrl } from './utils/assets';
+
 // كل النصوص هنا سهلة التعديل لاحقاً
 // المرسل: محمود - المرسل إليها: رقيّة
 
@@ -32,14 +34,14 @@ export const gallery: {
   caption: string;
   date: string;
   hue: number;
-  image?: string;
+  image: string;
 }[] = [
     {
       id: 1,
       caption: 'أجمل ذكرى لينا',
       date: 'محمود ورقيّة 💕',
       hue: 340,
-      image: '/image.png?v=3',
+      image: getAssetUrl('image.png'),
     },
   ];
 

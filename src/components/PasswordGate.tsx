@@ -8,20 +8,8 @@ export default function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const clean = password.trim().toLowerCase();
-    
-    const valid = [
-      'love',
-      '1234',
-      '0000',
-      'رقية',
-      'رقيّة',
-      'بحبك',
-      'حب',
-      'حبيبتي',
-    ];
-
-    if (valid.includes(clean) || clean.includes('love') || clean.includes('رقي')) {
+    // الباسورد هو LOVE فقط (سواء كابيتال أو سمول)
+    if (password.trim().toUpperCase() === 'LOVE') {
       onUnlock();
       return;
     }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getAssetUrl } from '../utils/assets';
 
 export interface Track {
   id: string;
@@ -14,13 +15,13 @@ export const defaultTracks: Track[] = [
     id: 'ramy-kol-sana',
     title: 'كل سنة',
     artist: 'رامي صبري',
-    source: '/audio/ramy-kol-sana.mp3',
+    source: getAssetUrl('audio/ramy-kol-sana.mp3'),
   },
   {
     id: 'ramy-ehsasi-maak',
     title: 'إحساسي معاك',
     artist: 'رامي صبري',
-    source: '/audio/ramy-ehsasi-maak.mp3',
+    source: getAssetUrl('audio/ramy-ehsasi-maak.mp3'),
   },
 ];
 
